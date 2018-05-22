@@ -8,6 +8,8 @@ import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 import edu.cmu.sphinx.api.SpeechResult;
 import edu.cmu.sphinx.api.StreamSpeechRecognizer;
+import edu.cmu.sphinx.decoder.adaptation.Transform;
+import edu.cmu.sphinx.result.WordResult;
 
 public class Recognition {
 
@@ -16,10 +18,8 @@ public class Recognition {
 		config.setAcousticModelPath("Files/acousticmodel");
 		config.setDictionaryPath("Files/dictionary/Vietnamese.dic");
 		config.setLanguageModelPath("Files/languageModel/Vietnamese.lm.dmp");
-		//config.setSampleRate(8000);
-		//System.out.println(config.getLanguageModelPath());
-		RecognitionByVoice(config);
-		//RecognitionByFile(config);
+		//RecognitionByVoice(config);
+		RecognitionByFile(config);
 	}
 	public static void RecognitionByVoice(Configuration config){
 		try {
@@ -30,17 +30,22 @@ public class Recognition {
 			System.out.println("Hãy nói!");
 			SpeechResult result;
 			while((result = recognizer.getResult()) != null) {
+				//for(WordResult word : result.getWords()) {
+	              //  System.out.println(word);
+	            //}
 				System.out.println("Nhận diện: " + result.getHypothesis());
 				System.out.println("Vui lòng nói!");
 			}
+			recognizer.stopRecognition();
 		} catch (IOException e) {
+			
 			e.printStackTrace();
 		}
 	}
 	
 	public static void RecognitionByFile(Configuration config){
 		try {
-			config.setSampleRate(8000);
+			//config.setSampleRate(8000);
 			StreamSpeechRecognizer recognizer = new StreamSpeechRecognizer(config);
 			String soundPath = "Files/test/";
 			String fileName;
@@ -51,9 +56,9 @@ public class Recognition {
 			//fileName = "Oithatlaphe105";
 			//fileName = "Tenhuconde106";
 			//fileName = "Hoangtubatconngua121";
-			//fileName = "Thaygiaothaytoi121";
+			fileName = "Thaygiaothaytoi121";
 			//fileName = "Thaygiaophatem125";
-			fileName = "Connguadaconde123";
+			//fileName = "Connguadaconde123";
 			String fileExtension = ".wav";
 			String filePath = soundPath + fileName + fileExtension;
 			InputStream input = new FileInputStream(filePath);
